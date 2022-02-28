@@ -1,24 +1,39 @@
-// Import express library
-const express = require("express");
+// demonstration of using Auth0 to login users before allowing access to endpoints
+// to step through this, see James Quick's video tutorial at https://www.youtube.com/watch?v=QQwo4E_B0y8
 
-// Import CORS to allow running backend on the same machine as frontend
-const cors = require("cors");
+const express = require('express');
+const data = require("./data");
+const app = express();
+require('dotenv').config();
 
-// Import router from routers.js
-const { router } = require("./routers");
+const { auth, requiresAuth } = require('express-openid-connect');
+app.use(
+  auth({
+    authRequired: false,
+    auth0Logout: true,
+    issuerBaseURL: process.env.ISSUER_BASE_URL,
+    baseURL: process.env.BASE_URL,
+    clientID: process.env.CLIENT_ID,
+    secret: process.env.SECRET,
+    idpLogout: true,
+  })
+);
 
-router.get("/home", (request, response) => {
-    response.send("My first app deployed to Heroku");
-})
+// req.isAuthenticated is provided from the auth router
+app.get('/', (request, response) => {
+  response.send(request.oidc.isAuthenticated() ? 'Logged in' : 'Logged out')
+});
 
-// Define server instance
-let app = express();
-app.use(cors());
-app.use(express.json());
+app.get('/profile', requiresAuth(), (request, response) => {
+    response.send(JSON.stringify(request.oidc.user));
+});
 
-app.use(router);
+app.get('/user/by-uid', requiresAuth(), (request, response) => {
+    let user = data.get_user_by_user_id(request.query.user_id);
+    response.status(200).send(user);
+  });
 
-app.listen(process.env.PORT || 3000, (errors) => {
-    if (errors) console.log(errors);
-    else console.log("Server started on port 3000.");
-})
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+});
