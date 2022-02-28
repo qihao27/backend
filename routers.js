@@ -33,13 +33,12 @@ router.get("", (request, response) => {
 });
 
 // Define a GET API with path "/sum"
-// router.post("path", callback);
 router.get("/sum", (request, response) => {
     let sum = parseInt(request.query.a) + parseInt(request.query.b);
     response.send("Sum is: " + sum);
-  });
+});
 
-  // Define a POST API with path "/sum"
+// Define a POST API with path "/sum"
 router.post("/sum", (request, response) => {
     let sum = request.body.a + request.body.b;
     response.send("Sum is : " + sum);
