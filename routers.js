@@ -1,5 +1,5 @@
 // Import express library
-const { response } = require("express");
+// const { response } = require("express");
 const express = require("express");
 
 // Import data.js
@@ -26,23 +26,23 @@ router.post("/users/add", (request, response) => {
   response.send("user added.");
 });
 
-// // Define a GET API with path "/home"
-// // router.get("path", callback);
-// router.get("/home", (request, response) => {
-//     response.send("Welcome!");
-// });
+// Define a GET API with path "/home"
+// router.get("path", callback);
+router.get("", (request, response) => {
+    response.send("Welcome!");
+});
 
-// // Define a GET API with path "/sum"
-// // router.post("path", callback);
-// router.get("/sum", (request, response) => {
-//     let sum = parseInt(request.query.a) + parseInt(request.query.b);
-//     response.send("Sum is: " + sum);
-//   });
+// Define a GET API with path "/sum"
+// router.post("path", callback);
+router.get("/sum", (request, response) => {
+    let sum = parseInt(request.query.a) + parseInt(request.query.b);
+    response.send("Sum is: " + sum);
+  });
 
-//   // Define a POST API with path "/sum"
-// router.post("/sum", (request, response) => {
-//     let sum = request.body.a + request.body.b;
-//     response.send("Sum is : " + sum);
-// });
+  // Define a POST API with path "/sum"
+router.post("/sum", (request, response) => {
+    let sum = request.body.a + request.body.b;
+    response.send("Sum is : " + sum);
+});
 
 module.exports = { router };
