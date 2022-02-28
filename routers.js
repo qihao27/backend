@@ -15,8 +15,8 @@ router.get("/users/all", (request, response) => {
 });
 
 // Define an API to get user based on user_id passed in the request
-router.get("/users/user-id", (request, response) => {
-    let users = database.get_user_by_user_id(request.query.id);
+router.get("/users/by-uid", (request, response) => {
+    let users = database.get_user_by_user_id(request.query.uid);
     response.send(users);
 });
 
