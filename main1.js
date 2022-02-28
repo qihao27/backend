@@ -7,7 +7,7 @@ const app = express();
 require('dotenv').config();
 
 const { auth, requiresAuth } = require('express-openid-connect');
-const { router } = require("./routers");
+const { router } = require("./routers1");
 app.use(
   auth({
     authRequired: false,
@@ -22,16 +22,23 @@ app.use(
 
 app.use(router);
 
-home_btn = '<br><a href="/home">Home</a>';
-users_btn = '<br><a href="/users/all">All users</a>';
-
 // req.isAuthenticated is provided from the auth router
 app.get('/', (request, response) => {
-  response.send(request.oidc.isAuthenticated() ? 'Logged in' : 'Logged out'+home_btn)
+  response.send(request.oidc.isAuthenticated() ? 'Logged in' : 'Logged out')
 });
 
 app.get('/profile', requiresAuth(), (request, response) => {
   response.send(JSON.stringify(request.oidc.user));
+});
+
+app.get("/users/all", (request, response) => {
+  let users = data.get_all_users();
+  response.send(users);
+});
+
+app.get('/users/by-uid', requiresAuth(), (request, response) => {
+  let user = data.get_user_by_user_id(request.query.uid);
+  response.status(200).send(user);
 });
 
 const port = process.env.PORT || 3000;

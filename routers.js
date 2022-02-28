@@ -26,11 +26,10 @@ router.post("/users/add", (request, response) => {
   response.send("user added.");
 });
 
-users_btn = '<br><a href="/users/all">All users</a>';
 // Define a GET API with path "/home"
 // router.get("path", callback);
-router.get("/home", (request, response) => {
-    response.send("Welcome!"+users_btn);
+router.get("", (request, response) => {
+    response.send("Welcome!");
 });
 
 // Define a GET API with path "/sum"
